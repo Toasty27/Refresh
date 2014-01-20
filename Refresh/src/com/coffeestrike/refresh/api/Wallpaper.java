@@ -17,19 +17,6 @@ import android.os.Parcelable;
  */
 public class Wallpaper implements Parcelable{
 	
-	class Resolution{
-		private String resolution;
-		
-		public int getHeight(){
-			return Integer.parseInt(resolution.split("x")[1]);
-		}
-		
-		public int getWidth(){
-			return Integer.parseInt(resolution.split("x")[0]);
-		}
-		
-	}
-
 	public static final String ID = "id";
 	public static final String PREVIEW_URL = "preview_url";
 	public static final String AVAILABLE_RESOLUTIONS = "resolutions_available_array";
@@ -72,10 +59,9 @@ public class Wallpaper implements Parcelable{
 		if(mResList == null){
 			try {
 				JSONArray resArray = mWallpaper.getJSONArray(AVAILABLE_RESOLUTIONS);
-				mResList = new ArrayList<Wallpaper.Resolution>();
+				mResList = new ArrayList<Resolution>();
 				for(int i = 0; i< resArray.length(); i++){
-					Resolution res = new Resolution();
-					res.resolution = resArray.getString(i);
+					Resolution res = new Resolution(resArray.getString(i));
 					mResList.add(res);
 				}
 				

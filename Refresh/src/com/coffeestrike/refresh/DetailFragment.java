@@ -1,10 +1,12 @@
 package com.coffeestrike.refresh;
 
 import android.app.Activity;
+import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +18,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.coffeestrike.refresh.api.ImageProvider;
+import com.coffeestrike.refresh.api.Resolution;
 import com.coffeestrike.refresh.api.Wallpaper;
+import com.coffeestrike.refresh.api.WallpaperUtils;
 
 public class DetailFragment extends Fragment {
 	
@@ -47,6 +51,7 @@ public class DetailFragment extends Fragment {
 	}
 	
 	public static final String EXTRA_WALLPAPER = "wallpaper";
+	private static final String TAG = "DetailFragment";
 	protected Wallpaper mWallpaper;
 	private ImageView mUpdateView;
 	private ProgressBar mProgress;
@@ -65,6 +70,7 @@ public class DetailFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		setRetainInstance(true);
 	}
 
 
@@ -95,14 +101,29 @@ public class DetailFragment extends Fragment {
 		switch(item.getItemId()){
 		
 			case R.id.action_download:
-				//TODO download the real size image
+				pickBestResAndDownload();
 				break;
 			default:
 				break;
 	
 		}
 		return true;
-	};
+	}
+
+	private void pickBestResAndDownload() {
+		/*
+		 * Pick the resolution closest to the screen size of the
+		 * device and download it.
+		 * 
+		 */
+		WallpaperManager wm = WallpaperManager.getInstance(getActivity());
+		int width = wm.getDesiredMinimumWidth();
+		int height = wm.getDesiredMinimumHeight();
+		Log.i(TAG, "Width desired: "+width +"\nHeight desired: "+height);
+		Resolution bestRes = WallpaperUtils.bestAvailableRes(mWallpaper.getAvailableResolutions(),
+				width, height);
+		Log.i(TAG, "Best res:"+ bestRes.toString());
+	}
 	
 
 }

@@ -3,8 +3,6 @@ package com.coffeestrike.refresh.api;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import com.coffeestrike.refresh.ImageCache;
-
 /**
  * Provides images for the app.
  * Dynamically handles the caching and downloading 

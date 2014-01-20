@@ -1,10 +1,8 @@
-package com.coffeestrike.refresh;
+package com.coffeestrike.refresh.api;
 
 import java.util.HashMap;
 
 import android.graphics.Bitmap;
-
-import com.coffeestrike.refresh.api.Wallpaper;
 
 /**
  * Stores and retrieves bitmaps for images.

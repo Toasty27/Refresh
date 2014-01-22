@@ -17,22 +17,25 @@ import android.os.Parcelable;
  */
 public class Wallpaper implements Parcelable{
 	
-	public static final String ID = "id";
-	public static final String PREVIEW_URL = "preview_url";
-	public static final String AVAILABLE_RESOLUTIONS = "resolutions_available_array";
-	public static final String TITLE = "title";
+	private static final String ID = "id";
+	private static final String PREVIEW_URL = "preview_url";
+	private static final String AVAILABLE_RESOLUTIONS = "resolutions_available_array";
+	private static final String TITLE = "title";
 	private static final String BIG_PREVIEW_URL = "preview_url@2x";
+	private static final String USER_NAME = "user_name";
+	private static final String DESCRIPTION = "description";
+	private static final String URL_IFL = "url_ifl";
 	
-	private JSONObject mWallpaper;
+	private JSONObject mData;
 	private ArrayList<Resolution> mResList;
 	
 	public Wallpaper(JSONObject model){
-		mWallpaper = model;
+		mData = model;
 	}
 	
 	public Wallpaper(Parcel in){
 		try {
-			mWallpaper = new JSONObject(in.readString());
+			mData = new JSONObject(in.readString());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -51,6 +54,8 @@ public class Wallpaper implements Parcelable{
 		}
 	};
 	
+
+	
 	
 	public ArrayList<Resolution> getAvailableResolutions(){
 		/*
@@ -58,7 +63,7 @@ public class Wallpaper implements Parcelable{
 		 */
 		if(mResList == null){
 			try {
-				JSONArray resArray = mWallpaper.getJSONArray(AVAILABLE_RESOLUTIONS);
+				JSONArray resArray = mData.getJSONArray(AVAILABLE_RESOLUTIONS);
 				mResList = new ArrayList<Resolution>();
 				for(int i = 0; i< resArray.length(); i++){
 					Resolution res = new Resolution(resArray.getString(i));
@@ -75,7 +80,7 @@ public class Wallpaper implements Parcelable{
 	
 	public String getBigPreviewUrl(){
 		try {
-			return mWallpaper.getString(BIG_PREVIEW_URL);
+			return mData.getString(BIG_PREVIEW_URL);
 		} catch (JSONException e) {
 			return null;
 		}
@@ -83,7 +88,7 @@ public class Wallpaper implements Parcelable{
 	
 	public String getPreviewUrl(){
 		try {
-			return mWallpaper.getString(PREVIEW_URL);
+			return mData.getString(PREVIEW_URL);
 		} catch (JSONException e) {
 			return null;
 		}
@@ -92,7 +97,7 @@ public class Wallpaper implements Parcelable{
 	
 	public String getTitle(){
 		try {
-			return mWallpaper.getString(TITLE);
+			return mData.getString(TITLE);
 		} catch (JSONException e) {
 			return null;
 		}
@@ -100,7 +105,7 @@ public class Wallpaper implements Parcelable{
 	
 	public String getWallpaperId(){
 		try {
-			return mWallpaper.getString(ID);
+			return mData.getString(ID);
 		} catch (JSONException e) {
 			return null;
 		}
@@ -115,8 +120,32 @@ public class Wallpaper implements Parcelable{
 
 	@Override
 	public void writeToParcel(Parcel out, int flags) {
-		out.writeString(mWallpaper.toString());
+		out.writeString(mData.toString());
 		out.writeValue(mResList);
+	}
+
+	public String getArtistName() {
+		try {
+			return mData.getString(USER_NAME);
+		} catch (JSONException e) {
+			return null;
+		}
+	}
+	
+	public String getDescription(){
+		try {
+			return mData.getString(DESCRIPTION);
+		} catch (JSONException e) {
+			return null;
+		}
+	}
+	
+	public String getIflUrl(){
+		try {
+			return mData.getString(URL_IFL);
+		} catch (JSONException e) {
+			return null;
+		}
 	}
 	
 	

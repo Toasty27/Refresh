@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"    
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+	
+	<com.sothree.slidinguppanel.SlidingUpPanelLayout
+	        xmlns:sothree="http://schemas.android.com/apk/res-auto"        
+	        android:id="@+id/sliding_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        sothree:collapsedHeight="68dp"
+	        sothree:shadowHeight="4dp"
+	        sothree:dragView="@+id/name">
+	
+	    <include layout="@layout/wallpaper_detail"/>
+	    
+	    <LinearLayout 
+	       android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#eee"
+            android:orientation="vertical" 
+            android:clickable="true"
+            android:focusable="false">
+	        
+	    <TextView
+	        android:id="@+id/image_title_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical|center_horizontal"
+	        android:layout_marginTop="16dp"
+	        android:textSize="20sp"
+	        android:text="Title" />
+	    
+	    <TextView
+	        android:id="@+id/image_artist_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical|center_horizontal"
+	        android:layout_marginTop="4dp"
+	        android:text="Artist" />
+	    
+	    <TextView android:id="@+id/image_info_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical|center_horizontal"
+	  
+	        android:layout_margin="16dp"
+	        android:text="Info"
+	        />
+	    
+	     <TextView android:id="@+id/image_ifl_link"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical|center_horizontal"
+	        android:layout_margin="16dp"
+	        android:autoLink="web"
+	        android:linksClickable="true"
+	        android:text="View on IFL"
+	        />
+	        
+	        
+	        
+	        
+	        
+	        
+	    </LinearLayout>
+
+	    
+	</com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+</RelativeLayout>

@@ -4,7 +4,8 @@
         android:title="Download" 
         android:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_download"
-        android:orderInCategory="1"></item>
+        android:orderInCategory="2"></item>
+    <item android:id="@+id/action_info" android:titleCondensed="@string/photo_details_short" android:orderInCategory="1" android:icon="@drawable/ic_action_about" android:showAsAction="ifRoom" android:title="@string/photo_details"></item>
     
 
 </menu>

@@ -52,7 +52,14 @@ public class ImageProvider {
 		 */
 		else{
 			ApiProvider api = new ApiProvider();
-			image = api.getImage(wallpaper.getPreviewUrl());	
+			image = api.getImage(wallpaper.getPreviewUrl());
+			/*
+			 * Sometimes the preview might be a 404 page, so 
+			 * we need to get the larger preview instead.
+			 */
+			if(image == null){
+				image = api.getImage(wallpaper.getBigPreviewUrl());
+			}
 			/*
 			 * If we had to download it, we should also write 
 			 * it to external storage

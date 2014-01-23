@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectOutputStream;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,6 +15,8 @@ import android.os.Environment;
 public class StorageProvider{
 	
 	public static final int FLAG_NO_OVERWRITE = 0;
+	
+	public static final String DIR_DOWNLOADS = "Refresh";
 	
 	private Context mContext;
 

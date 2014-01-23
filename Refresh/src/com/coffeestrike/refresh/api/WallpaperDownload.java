@@ -31,5 +31,9 @@ public class WallpaperDownload {
 			return null;
 		}
 	}
+	
+	public String toString(){
+		return getDownloadUrl();
+	}
 
 }

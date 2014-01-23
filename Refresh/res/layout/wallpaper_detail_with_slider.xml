@@ -4,65 +4,72 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 	
-	<com.sothree.slidinguppanel.SlidingUpPanelLayout
-	        xmlns:sothree="http://schemas.android.com/apk/res-auto"        
-	        android:id="@+id/sliding_layout"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"
-	        sothree:collapsedHeight="68dp"
-	        sothree:shadowHeight="4dp"
-	        sothree:dragView="@+id/name">
+	<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
+	    android:id="@+id/sliding_layout"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    sothree:collapsedHeight="72dp"
+	    sothree:dragView="@+id/name"
+	    sothree:shadowHeight="4dp" >
 	
 	    <include layout="@layout/wallpaper_detail"/>
 	    
-	    <LinearLayout 
-	       android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#eee"
-            android:orientation="vertical" 
-            android:clickable="true"
-            android:focusable="false">
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:background="#eee"
+	        android:focusable="false"
+	        android:orientation="vertical" >
 	        
-	    <TextView
-	        android:id="@+id/image_title_text"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_vertical|center_horizontal"
-	        android:layout_marginTop="16dp"
-	        android:textSize="20sp"
-	        android:text="Title" />
-	    
-	    <TextView
-	        android:id="@+id/image_artist_text"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_vertical|center_horizontal"
-	        android:layout_marginTop="4dp"
-	        android:text="Artist" />
+		<RelativeLayout 
+		    android:layout_width="match_parent"
+		    android:layout_height="72dp">
+		    
+		    <ImageView
+	           android:id="@+id/imageView1"
+	           android:layout_width="wrap_content"
+	           android:layout_height="wrap_content"
+	           android:layout_centerHorizontal="true"
+			   android:layout_alignParentTop="true"
+			   android:drawable="@drawable/arrow_up"/>
+		        
+		    <TextView
+		        android:id="@+id/image_title_text"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_marginTop="4dp"
+		        android:layout_below="@id/imageView1"
+		        android:textSize="20sp"
+		        android:text="Title" />
+		    
+		    <TextView
+		        android:id="@+id/image_artist_text"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/image_title_text"
+		        android:layout_marginTop="4dp"
+		        android:text="Artist" />
+		</RelativeLayout>    
+
+
 	    
 	    <TextView android:id="@+id/image_info_text"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center_vertical|center_horizontal"
-	  
 	        android:layout_margin="16dp"
 	        android:text="Info"
 	        />
 	    
-	     <TextView android:id="@+id/image_ifl_link"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_vertical|center_horizontal"
-	        android:layout_margin="16dp"
-	        android:autoLink="web"
-	        android:linksClickable="true"
-	        android:text="View on IFL"
-	        />
-	        
-	        
-	        
-	        
-	        
+	     <TextView
+	         android:id="@+id/image_ifl_link"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:layout_gravity="center_vertical|center_horizontal"
+	         android:layout_margin="16dp"
+	         android:text="View on IFL" />
 	        
 	    </LinearLayout>
 

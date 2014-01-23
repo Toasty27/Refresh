@@ -197,6 +197,7 @@ public class ImageListFragment extends ListFragment {
 			}
 			
 			ImageView imagePreview = (ImageView) convertView.findViewById(R.id.image_view);
+			imagePreview.setImageResource(R.drawable.placeholder);
 			TextView titleText = (TextView)convertView.findViewById(R.id.title_text);
 			
 			/*

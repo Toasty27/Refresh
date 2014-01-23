@@ -1,14 +1,24 @@
 package com.coffeestrike.refresh;
 
+import java.util.List;
+
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.DownloadManager;
+import android.app.DownloadManager.Request;
 import android.app.WallpaperManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,15 +26,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.coffeestrike.refresh.api.ApiProvider;
 import com.coffeestrike.refresh.api.ImageProvider;
 import com.coffeestrike.refresh.api.Resolution;
+import com.coffeestrike.refresh.api.StorageProvider;
 import com.coffeestrike.refresh.api.Wallpaper;
+import com.coffeestrike.refresh.api.WallpaperDownload;
 import com.coffeestrike.refresh.api.WallpaperUtils;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -54,8 +67,9 @@ public class DetailFragment extends Fragment {
 					mProgress.setVisibility(View.GONE);
 				}
 			}
-		
 	}
+	
+
 	
 	public static final String EXTRA_WALLPAPER = "wallpaper";
 	private static final String TAG = "DetailFragment";
@@ -64,7 +78,6 @@ public class DetailFragment extends Fragment {
 	private ProgressBar mProgress;
 	
 	private TextView mTitleText;
-	private ProgressBar mDownloadProgress;
 	private SlidingUpPanelLayout mLayout;
 	private TextView mArtistText;
 	private TextView mInfoText;
@@ -106,30 +119,40 @@ public class DetailFragment extends Fragment {
 		mTitleText = (TextView) v.findViewById(R.id.image_title_text);
 		mTitleText.setText(mWallpaper.getTitle());
 		
+		mLayout.setDragView(mTitleText);
+		
 		mArtistText = (TextView) v.findViewById(R.id.image_artist_text);
-		mArtistText.setText(mWallpaper.getArtistName());
+		mArtistText.setText("Artist: "+ mWallpaper.getArtistName());
 		
 		mInfoText = (TextView) v.findViewById(R.id.image_info_text);
 		mInfoText.setText(mWallpaper.getDescription());
 		
 		mLinkText = (TextView) v.findViewById(R.id.image_ifl_link);
-		mLinkText.setText("View on InterfaceLift");
-		mLinkText.setMovementMethod(LinkMovementMethod.getInstance());
+		mLinkText.setText(mWallpaper.getIflUrl());
 		mLinkText.setClickable(true);
+		Linkify.addLinks(mLinkText, Linkify.WEB_URLS);
 		mLinkText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(mWallpaper.getIflUrl()));
-                startActivity(i);
+                launchBrowser(mWallpaper.getIflUrl());
             }
         });
 		
 		
 		new GetImagePreviewTask().execute();
 		
-		
 		return v;
+	}
+	
+	private void launchBrowser(String url) {
+		Uri link = Uri.parse(url);
+		Intent webIntent = new Intent(Intent.ACTION_VIEW, link);
+		PackageManager pm = getActivity().getPackageManager();
+		List<ResolveInfo> activities = pm.queryIntentActivities(webIntent, 0);
+		boolean isIntentSafe = activities.size() > 0;
+		if(isIntentSafe){
+			startActivity(webIntent);
+		}
 	}
 	
 	
@@ -160,6 +183,51 @@ public class DetailFragment extends Fragment {
 		Resolution bestRes = WallpaperUtils.bestAvailableRes(mWallpaper.getAvailableResolutions(),
 				width, height);
 		Log.i(TAG, "Best res:"+ bestRes.toString());
+		
+		new ImageDownloadTask(mWallpaper, bestRes).execute();
+		
+	}
+	
+	private class ImageDownloadTask extends AsyncTask<Void, Void, WallpaperDownload>{
+		
+		private Wallpaper wallpaper;
+		private Resolution res;
+
+		protected ImageDownloadTask(Wallpaper wallpaper, Resolution res){
+			this.wallpaper = wallpaper;
+			this.res = res;
+		}
+		
+		@Override
+		protected WallpaperDownload doInBackground(Void... arg0) {
+			ApiProvider api = new ApiProvider();
+			WallpaperDownload download = api.getWallpaperDownload(wallpaper, res);
+			Log.d(TAG, download.toString());
+			return download;
+		}
+		
+		@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+		@Override
+		protected void onPostExecute(WallpaperDownload download){
+			Uri uri = Uri.parse(download.getDownloadUrl());
+			DownloadManager.Request request = new DownloadManager.Request(uri);
+			request.setTitle(this.wallpaper.getTitle())
+				.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES 
+						,download.getFileName());
+			
+			
+			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+				request.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+				request.allowScanningByMediaScanner();
+			}
+			
+			DownloadManager dm = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+			
+			dm.enqueue(request);
+			
+		}
+		
+		
 	}
 	
 

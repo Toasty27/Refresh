@@ -1,14 +1,19 @@
 package com.coffeestrike.refresh;
 
-import com.coffeestrike.refresh.ImageListFragment.OnListItemSelectedListener;
-import com.coffeestrike.refresh.api.Wallpaper;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.Menu;
+
+import com.coffeestrike.refresh.ImageListFragment.OnListItemSelectedListener;
+import com.coffeestrike.refresh.api.Wallpaper;
+/*
+ * Developers not using TestFlight should remove this import 
+ * as well as the call to start TestFlight in onCreate()
+ */
+import com.testflightapp.lib.TestFlight;
 
 public class MainActivity extends FragmentActivity implements OnListItemSelectedListener {
 	
@@ -19,6 +24,12 @@ public class MainActivity extends FragmentActivity implements OnListItemSelected
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		/*
+		 * Git cloners should feel free to create their own TestFlight API
+		 * key to track bugs on their own build, or simply remover this line.
+		 */
+		TestFlight.takeOff(this.getApplication(), TestFlightApiKey.API_KEY);
+		
 		setContentView(R.layout.activity_main);
 		mFragMan = getSupportFragmentManager(); 
 		 

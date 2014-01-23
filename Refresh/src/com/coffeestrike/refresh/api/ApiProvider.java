@@ -85,8 +85,8 @@ public class ApiProvider {
 		return list;
 	}
 	
-	public WallpaperDownload getWallpaperDownload(Wallpaper wallpaper, String resolution){
-		String downloadUrl = makeDownloadUrl(wallpaper, resolution);
+	public WallpaperDownload getWallpaperDownload(Wallpaper wallpaper, Resolution resolution){
+		String downloadUrl = makeDownloadUrl(wallpaper, resolution.toString());
 		try {
 			HttpResponse<JsonNode> request = Unirest.get(downloadUrl)
 					  .header("X-Mashape-Authorization", InterfaceLiftApiKey.API_KEY_TESTING)

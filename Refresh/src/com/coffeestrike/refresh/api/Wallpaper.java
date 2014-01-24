@@ -28,6 +28,7 @@ public class Wallpaper implements Parcelable{
 	
 	private JSONObject mData;
 	private ArrayList<Resolution> mResList;
+	private long mDownloadId;
 	
 	public Wallpaper(JSONObject model){
 		mData = model;
@@ -41,6 +42,7 @@ public class Wallpaper implements Parcelable{
 			e.printStackTrace();
 		}
 		mResList = in.readArrayList(null);
+		mDownloadId = in.readLong();
 	}
 	
 	public static final Parcelable.Creator<Wallpaper> CREATOR
@@ -122,6 +124,7 @@ public class Wallpaper implements Parcelable{
 	public void writeToParcel(Parcel out, int flags) {
 		out.writeString(mData.toString());
 		out.writeValue(mResList);
+		out.writeLong(mDownloadId);
 	}
 
 	public String getArtistName() {
@@ -148,5 +151,17 @@ public class Wallpaper implements Parcelable{
 		}
 	}
 	
+	public long getDownloadId(){
+		return mDownloadId;
+	}
+	
+	public void setDownloadId(long downloadId){
+		mDownloadId = downloadId;
+	}
+	
+	@Override 
+	public int hashCode(){
+		return getWallpaperId().hashCode();
+	}
 	
 }

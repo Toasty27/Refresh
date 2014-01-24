@@ -2,16 +2,17 @@ package com.coffeestrike.refresh;
 
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.DownloadManager.Request;
 import android.app.WallpaperManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -31,11 +32,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.coffeestrike.refresh.api.ApiProvider;
 import com.coffeestrike.refresh.api.ImageProvider;
 import com.coffeestrike.refresh.api.Resolution;
-import com.coffeestrike.refresh.api.StorageProvider;
 import com.coffeestrike.refresh.api.Wallpaper;
 import com.coffeestrike.refresh.api.WallpaperDownload;
 import com.coffeestrike.refresh.api.WallpaperUtils;
@@ -82,6 +83,7 @@ public class DetailFragment extends Fragment {
 	private TextView mArtistText;
 	private TextView mInfoText;
 	private TextView mLinkText;
+	private AsyncTask<Void, Void, WallpaperDownload> mImageDownload;
 
 	
 	@Override
@@ -104,6 +106,8 @@ public class DetailFragment extends Fragment {
 		inflater.inflate(R.menu.detail_menu, menu);
 	}
 	
+	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -156,12 +160,21 @@ public class DetailFragment extends Fragment {
 	}
 	
 	
+	@SuppressLint("NewApi")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()){
 		
 			case R.id.action_download:
-				pickBestResAndDownload();
+//			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+//				getActivity().invalidateOptionsMenu();
+//			}
+				if(mImageDownload == null){
+					pickBestResAndDownload();
+				}
+				else{
+					Toast.makeText(getActivity(), "Already downloading", Toast.LENGTH_SHORT).show();
+				}
 				break;
 			default:
 				break;
@@ -184,7 +197,7 @@ public class DetailFragment extends Fragment {
 				width, height);
 		Log.i(TAG, "Best res:"+ bestRes.toString());
 		
-		new ImageDownloadTask(mWallpaper, bestRes).execute();
+		mImageDownload = new ImageDownloadTask(mWallpaper, bestRes).execute();
 		
 	}
 	

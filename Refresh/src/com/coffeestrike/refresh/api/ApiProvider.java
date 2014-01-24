@@ -27,7 +27,7 @@ public class ApiProvider {
 	 */
 	@Deprecated
 	public ArrayList<Wallpaper> getWallpapers(){
-		ArrayList<Wallpaper> list = null;
+		ArrayList<Wallpaper> list = new ArrayList<Wallpaper>();
 		
 		try {
 			HttpResponse<JsonNode> response = Unirest.get(BASE_URL + "/wallpapers/")
@@ -46,17 +46,16 @@ public class ApiProvider {
 			
 		} catch (UnirestException e) {
 			e.printStackTrace();
-			return null;
 		} catch (JSONException e) {
 			e.printStackTrace();
-			return null;
+
 		}
 		
 		return list;
 	}
 	
 	public ArrayList<Wallpaper> getWallpapers(int limit, int start){
-		ArrayList<Wallpaper> list = null;
+		ArrayList<Wallpaper> list = new ArrayList<Wallpaper>();
 		
 		try {
 			HttpResponse<JsonNode> response = Unirest.get(BASE_URL + "/wallpapers/"+ LIMIT
@@ -76,10 +75,8 @@ public class ApiProvider {
 			
 		} catch (UnirestException e) {
 			e.printStackTrace();
-			return null;
 		} catch (JSONException e) {
 			e.printStackTrace();
-			return null;
 		}
 		
 		return list;

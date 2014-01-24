@@ -2,6 +2,7 @@ package com.coffeestrike.refresh.api;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.v4.util.LruCache;
 
 /**
  * Provides images for the app.
@@ -13,14 +14,15 @@ import android.graphics.Bitmap;
 public class ImageProvider {
 
 	private static ImageProvider sImageProviderInstance;
-	
-	private ImageCache mImagePreviewCache;
+
+	private LruCache<Wallpaper, Bitmap> mImagePreviewCache;
 	private StorageProvider mStorageProvider;
 	private Context mAppContext;
 	
 	protected ImageProvider(Context context){
 		mAppContext = context.getApplicationContext();
-		mImagePreviewCache = new ImageCache();
+		int cacheSize = 4 * 1024 * 1024;
+		mImagePreviewCache = new LruCache<Wallpaper, Bitmap>(cacheSize);
 		mStorageProvider = new StorageProvider(context);
 	}
 	
@@ -37,14 +39,12 @@ public class ImageProvider {
 		/*
 		 * Does the cache in memory contain the image?
 		 */
-		if(mImagePreviewCache.contains(wallpaper)){
-			return mImagePreviewCache.getBitmap(wallpaper);
-		}
+		if((image = mImagePreviewCache.get(wallpaper)) != null);
 		/*
 		 * Does the cache on local storage contain the image?
 		 */
 		else if((image = mStorageProvider.getPreviewBitmap(wallpaper)) != null){
-			mImagePreviewCache.cacheBitmap(wallpaper, image);
+			mImagePreviewCache.put(wallpaper, image);
 			return image;
 		}
 		/*
@@ -66,7 +66,7 @@ public class ImageProvider {
 			 */
 			mStorageProvider.savePreviewBitmap(wallpaper, image,
 					StorageProvider.FLAG_NO_OVERWRITE);
-			mImagePreviewCache.cacheBitmap(wallpaper, image);
+			mImagePreviewCache.put(wallpaper, image);
 		}
 
 		return image;

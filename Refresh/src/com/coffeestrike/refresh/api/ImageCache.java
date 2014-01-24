@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
  * @author ben
  *
  */
+@Deprecated
 public class ImageCache {
 	
 	private HashMap<String, Bitmap> mCache;

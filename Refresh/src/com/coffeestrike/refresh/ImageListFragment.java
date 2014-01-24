@@ -45,6 +45,8 @@ public class ImageListFragment extends ListFragment {
 	private int mLastScrollState;
 	private int limit = 10;
 	private int start = -10;
+
+	private ListView mListView;
 	
 	@Override
 	public void onAttach(Activity activity){
@@ -66,22 +68,27 @@ public class ImageListFragment extends ListFragment {
 		mApiProvider = new ApiProvider();
 		mWallpaperList = new ArrayList<Wallpaper>();
 
-		FetchWallpapersTask fetchTask= new FetchWallpapersTask();
-		fetchTask.execute();
 
+		checkNetworkAndFetchWallpapers();
+
+	}
+
+	private void checkNetworkAndFetchWallpapers() {
+		FetchWallpapersTask fetchTask = new FetchWallpapersTask();
+		fetchTask.execute();
 	}
 	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v=  super.onCreateView(inflater, container, savedInstanceState);
-		ListView listView = (ListView) v.findViewById(android.R.id.list);
-		listView.setOnScrollListener(mScrollListener);
+		View v =  super.onCreateView(inflater, container, savedInstanceState);
+		mListView = (ListView) v.findViewById(android.R.id.list);
+		mListView.setOnScrollListener(mScrollListener);
 		
 		if(savedInstanceState != null){
 			int position = savedInstanceState.getInt(STATE_POSITION);
-			listView.setSelection(position);
+			mListView.setSelection(position);
 		}
 		return v;
 	}
@@ -111,10 +118,9 @@ public class ImageListFragment extends ListFragment {
 			@Override
 			protected Void doInBackground(Void... arg0) {
 				List<Wallpaper> resultsList = mApiProvider.getWallpapers(limit, start);
-				for(Wallpaper w: resultsList){
+				for (Wallpaper w : resultsList) {
 					mWallpaperList.add(w);
 				}
-				
 				return null;
 			}
 			
@@ -221,7 +227,7 @@ public class ImageListFragment extends ListFragment {
 		public void onScrollStateChanged(AbsListView listView, int scrollState) {
 			if (scrollState == SCROLL_STATE_IDLE) {
 				if (listView.getLastVisiblePosition() >= listView.getCount() - visibleThreshold) {
-					new FetchWallpapersTask().execute();
+					checkNetworkAndFetchWallpapers();
 				}
 			}			
 		}

@@ -143,9 +143,16 @@ public class DetailFragment extends Fragment {
         });
 		
 		
-		new GetImagePreviewTask().execute();
+
 		
 		return v;
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		new GetImagePreviewTask().execute();
+		
 	}
 	
 	private void launchBrowser(String url) {

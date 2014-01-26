@@ -15,7 +15,7 @@ import com.coffeestrike.refresh.api.Wallpaper;
  */
 import com.testflightapp.lib.TestFlight;
 
-public class MainActivity extends FragmentActivity implements OnListItemSelectedListener {
+public class ImageListActivity extends FragmentActivity implements OnListItemSelectedListener {
 	
 	
 	private FragmentManager mFragMan;
@@ -46,8 +46,8 @@ public class MainActivity extends FragmentActivity implements OnListItemSelected
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+//		getMenuInflater().inflate(R.menu.main, menu);
+		return false;
 	}
 
 	@Override

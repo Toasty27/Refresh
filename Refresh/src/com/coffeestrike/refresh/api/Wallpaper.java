@@ -56,9 +56,6 @@ public class Wallpaper implements Parcelable{
 		}
 	};
 	
-
-	
-	
 	public ArrayList<Resolution> getAvailableResolutions(){
 		/*
 		 * create the list of resolutions if it hasn't been already

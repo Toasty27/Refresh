@@ -9,11 +9,11 @@ import android.view.Menu;
 
 import com.coffeestrike.refresh.ImageListFragment.OnListItemSelectedListener;
 import com.coffeestrike.refresh.api.Wallpaper;
+import com.testflightapp.lib.TestFlight;
 /*
  * Developers not using TestFlight should remove this import 
  * as well as the call to start TestFlight in onCreate()
  */
-import com.testflightapp.lib.TestFlight;
 
 public class ImageListActivity extends FragmentActivity implements OnListItemSelectedListener {
 	
@@ -46,8 +46,8 @@ public class ImageListActivity extends FragmentActivity implements OnListItemSel
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-//		getMenuInflater().inflate(R.menu.main, menu);
-		return false;
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
 	}
 
 	@Override

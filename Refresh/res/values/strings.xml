@@ -6,6 +6,7 @@
     <string name="load_more">Load more</string>
     <string name="photo_details">Photo details</string>
     <string name="photo_details_short">Info</string>
-    <string name="empty_text">Couldn\'t get any pics. \nCheck your network connection.</string>
+    <string name="list_empty">Unable to connect to the internet.\nCheck your network connection.</string>
+    <string name="refresh">Retry</string>
 
 </resources>

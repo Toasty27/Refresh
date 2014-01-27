@@ -4,16 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,7 +29,7 @@ import com.coffeestrike.refresh.api.Wallpaper;
 /**
  * 
  * Shows a list of image previews.
- * @author ben
+ * @author Benjamin Daschel
  *
  */
 public class ImageListFragment extends ListFragment {
@@ -47,6 +51,8 @@ public class ImageListFragment extends ListFragment {
 	private int start = -10;
 
 	private ListView mListView;
+
+	private Button mRetryButton;
 	
 	@Override
 	public void onAttach(Activity activity){
@@ -74,17 +80,30 @@ public class ImageListFragment extends ListFragment {
 	}
 
 	private void checkNetworkAndFetchWallpapers() {
-		FetchWallpapersTask fetchTask = new FetchWallpapersTask();
-		fetchTask.execute();
+		ConnectivityManager netMan = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+		if(netMan.getActiveNetworkInfo().isConnected()){
+			FetchWallpapersTask fetchTask = new FetchWallpapersTask();
+			fetchTask.execute();
+		}
 	}
 	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v =  super.onCreateView(inflater, container, savedInstanceState);
+		View v = inflater.inflate(R.layout.image_list, container, false);
+//		View v =  super.onCreateView(inflater, container, savedInstanceState);
 		mListView = (ListView) v.findViewById(android.R.id.list);
 		mListView.setOnScrollListener(mScrollListener);
+		mRetryButton = (Button) v.findViewById(R.id.btn_retry);
+		mRetryButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				checkNetworkAndFetchWallpapers();
+				
+			}
+		});
 		
 		if(savedInstanceState != null){
 			int position = savedInstanceState.getInt(STATE_POSITION);
